@@ -10,12 +10,12 @@ import { Partial, PasswordCheckerConfig, PasswordCheckerConfigValue } from './pa
   // eslint-disable-next-line  @angular-eslint/directive-selector
   selector: '[pwnedPasswordValidator][formControlName], [pwnedPasswordValidator][ngModel],[pwnedPasswordValidator][formControl]',
   providers: [
-        {
-          provide: NG_ASYNC_VALIDATORS,
-          useExisting: PasswordCheckerLibDirective,
-          multi: true,
-        },
-      ]
+    {
+      provide: NG_ASYNC_VALIDATORS,
+      useExisting: PasswordCheckerLibDirective,
+      multi: true,
+    },
+  ]
 })
 export class PasswordCheckerLibDirective implements AsyncValidator {
   private pwnedPasswordMinimumOccurrenceForErrorValue: number;
@@ -23,11 +23,12 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
   @Input() pwnedPasswordApi: string;
   @Input() pwnedPasswordMinimumOccurrenceForError: number;
   @Input() pwnedPasswordApiCallDebounceTime: number;
+  @Input() pwnedPasswordValidator: boolean;
 
   constructor(
     private http: HttpClient,
     @Optional() @Inject(PasswordCheckerConfigValue) config: Partial<PasswordCheckerConfig>,
-    ) {
+  ) {
 
     if (!config) {
       // default initialization in constructor didn't work.
@@ -46,38 +47,39 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
       || 400;
   }
 
-  validate(control: AbstractControl): Observable<ValidationErrors|null> {
+  validate(control: AbstractControl): Observable<ValidationErrors | null> {
     const pw = ''.concat(control.value);
+    if (this.pwnedPasswordValidator) {
+      return timer(this.pwnedPasswordApiCallDebounceTime).pipe(
+        map(() => {
+          const pwSha1 = sha1(pw).toString().toUpperCase();
 
-    return timer(this.pwnedPasswordApiCallDebounceTime).pipe(
-      map(() => {
-        const pwSha1 = sha1(pw).toString().toUpperCase();
-
-        return {
-          firstPart: pwSha1.substring(0, 5),
-          lastPart: pwSha1.substring(5),
-        };
-      }),
-      switchMap(
-        (hash) => this.http.get(
-          `${this.pwnedPasswordApi}${hash.firstPart}`,  { responseType: 'text' }
+          return {
+            firstPart: pwSha1.substring(0, 5),
+            lastPart: pwSha1.substring(5),
+          };
+        }),
+        switchMap(
+          (hash) => this.http.get(
+            `${this.pwnedPasswordApi}${hash.firstPart}`, { responseType: 'text' }
           ).pipe(
-          map(passwords => passwords.split(/[\r\n]+/)),
-          map(passwords => passwords.map((password) => {
-              const split =  password.split(':');
+            map(passwords => passwords.split(/[\r\n]+/)),
+            map(passwords => passwords.map((password) => {
+              const split = password.split(':');
 
               return {
                 hash: split[0],
                 count: parseInt(split[1], 10),
               };
             }
-          )),
-          map(passwords => passwords.find(password => password.hash === hash.lastPart)),
+            )),
+            map(passwords => passwords.find(password => password.hash === hash.lastPart)),
+          ),
         ),
-      ),
-      map(password => password && password.count >= this.pwnedPasswordMinimumOccurrenceForError
-        ? { pwnedPasswordOccurrence: password.count }
-        : null),
-    );
+        map(password => password && password.count >= this.pwnedPasswordMinimumOccurrenceForError
+          ? { pwnedPasswordOccurrence: password.count }
+          : null),
+      );
+    }
   }
 }

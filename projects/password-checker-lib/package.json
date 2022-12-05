@@ -1,24 +1,26 @@
 {
-  "name": "@triangular/password-checker",
-  "version": "9.0.0",
+  "name": "@rickfrankel/angular-password-checker",
+  "version": "9.0.1",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
     "@angular/core": "^14.0.0",
     "crypto-js": "^4.1.1"
   },
-  "homepage": "https://password.akehir.com",
-  "license" : "MIT",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akehir/angular-password-checker"
+    "url": "https://github.com/rickfrankel/angular-password-checker"
   },
-  "bugs": { "url" : "https://github.com/akehir/angular-password-checker/issues"
-  , "email" : "raphael@ochsenbe.in"
+  "author": {
+    "name": "Rick Frankel"
   },
-  "author": { "name" : "Raphael Ochsenbein"
-            , "email" : "raphael@ochsenbe.in"
-            , "url" : "https://akehir.com/"
-  },
+  "contributors": [
+    {
+      "name": "Raphael Ochsenbein",
+      "email": "raphael@ochsenbe.in",
+      "url": "https://akehir.com/"
+    }
+  ],
   "dependencies": {
     "tslib": "^2.0.0"
   }
