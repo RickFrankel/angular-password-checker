@@ -1,6 +1,6 @@
 {
   "name": "@rick.frankel/angular-password-checker",
-  "version": "9.0.4",
+  "version": "9.0.5",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
     "@angular/core": "^14.0.0",
