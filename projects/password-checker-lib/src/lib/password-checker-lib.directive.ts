@@ -1,4 +1,4 @@
-import { Observable, timer } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
 import { Directive, Inject, Input, Optional } from '@angular/core';
@@ -49,7 +49,9 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
 
   validate(control: AbstractControl): Observable<ValidationErrors | null> {
     const pw = ''.concat(control.value);
-    if (this.pwnedPasswordValidator) {
+    const pwnedPasswordValidator = this.pwnedPasswordValidator;
+
+    if (pwnedPasswordValidator) {
       return timer(this.pwnedPasswordApiCallDebounceTime).pipe(
         map(() => {
           const pwSha1 = sha1(pw).toString().toUpperCase();
@@ -80,6 +82,8 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
           ? { pwnedPasswordOccurrence: password.count }
           : null),
       );
+    } else {
+      return of(null);
     }
   }
 }
