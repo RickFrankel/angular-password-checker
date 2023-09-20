@@ -196,3 +196,12 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 * [angularindepth](https://blog.angularindepth.com/creating-a-library-in-angular-6-87799552e7e5) for a tutorial for creating an angular library
 * [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2/) for the readme template
 
+
+
+
+## INBOUND NOTES
+- yarn to ensure all is installed from the parent directory
+- yarn build:lib to build the new library (check the package.json in the password-checker-lib folder for the correct version number.  You need to update if publishing a new version)
+- change directory to the dist\password-checker-lib folder
+- npm login
+- npm publish --access public

@@ -1,9 +1,9 @@
 {
   "name": "@rick.frankel/angular-password-checker",
-  "version": "9.0.8",
+  "version": "9.0.10",
   "peerDependencies": {
-    "@angular/common": "^14.0.0",
-    "@angular/core": "^14.0.0",
+    "@angular/common": "^16.1.2",
+    "@angular/core": "^16.1.2",
     "crypto-js": "^4.1.1"
   },
   "license": "MIT",
