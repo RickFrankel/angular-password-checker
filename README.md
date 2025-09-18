@@ -1,3 +1,11 @@
+# Rick's Deployment Method
+
+* yarn run build:lib
+* cd dist\password-checker-lib
+* npm adduser (if not already authenticated)
+* npm publish --access public
+
+
 # Angular Pwned Password Checker Directive
 
 Protect your users from re-using a password known to be hacked with this simple Angular directive. Check out the [example page](https://password.akehir.com/) to see how it works. The passwords never leave the browser memory and are not transmitted over the network.

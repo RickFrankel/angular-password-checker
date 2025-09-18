@@ -1,0 +1,34 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: password-checker
+  namespace: triangular
+spec:
+  selector:
+    matchLabels:
+      app: password-checker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: password-checker
+    spec:
+      containers:
+        - name: password-checker-example-app
+          image: registry.akehir.com:443/triangular/password-checker/password-checker-example-app:develop-1f64443c-1733325685 # {"$imagepolicy": "triangular:password-checker-example-app-image-policy"}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8811
+      imagePullSecrets:
+        - name: deploy-triangular
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64

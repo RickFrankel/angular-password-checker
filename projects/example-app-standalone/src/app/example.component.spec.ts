@@ -1,19 +1,16 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { ExampleComponent } from './example.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PasswordCheckerModule } from '@triangular/password-checker';
+import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { provideHttpClient } from "@angular/common/http";
 
 describe('ExampleComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        ExampleComponent
-      ],
+      declarations: [],
       imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        PasswordCheckerModule,
+        ExampleComponent,
       ],
+      providers: [provideHttpClient(), provideHttpClientTesting()]
     }).compileComponents();
   }));
 
