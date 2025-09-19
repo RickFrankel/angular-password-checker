@@ -8,6 +8,8 @@ import {
 import { AppComponent } from './app.component';
 import { PasswordCheckerModule } from '@triangular/password-checker';
 import { ExampleComponent } from './example.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TestInterceptorShouldntInclude } from './test-interceptor-shouldnt-include';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { ExampleComponent } from './example.component';
     ReactiveFormsModule,
     PasswordCheckerModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TestInterceptorShouldntInclude, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

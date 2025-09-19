@@ -2,7 +2,7 @@ import { Observable, of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { AbstractControl, AsyncValidator, NG_ASYNC_VALIDATORS, ValidationErrors } from '@angular/forms';
 import { Directive, Inject, Input, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpBackend, HttpClient, HttpHeaders } from '@angular/common/http';
 import sha1 from 'crypto-js/sha1';
 import { Partial, PasswordCheckerConfig, PasswordCheckerConfigValue } from './password-checker.config';
 
@@ -24,8 +24,10 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
   @Input() pwnedPasswordApiCallDebounceTime: number;
   @Input() pwnedPasswordValidator: boolean;
 
+  private http: HttpClient;
+
   constructor(
-    private http: HttpClient,
+    handler: HttpBackend,
     @Optional() @Inject(PasswordCheckerConfigValue) config: Partial<PasswordCheckerConfig>,
   ) {
 
@@ -34,6 +36,8 @@ export class PasswordCheckerLibDirective implements AsyncValidator {
       // conflict with @Optional()?
       config = {};
     }
+
+    this.http = new HttpClient(handler);
 
     this.pwnedPasswordApi =
       config.pwnedPasswordApi
